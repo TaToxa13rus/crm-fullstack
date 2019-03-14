@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../shared/services/auth.service';
 
@@ -26,6 +26,14 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(6)
       ])
+    });
+
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params['registered']) {
+
+      } else if (params['accessDenied']) {
+        
+      }
     });
   }
 
