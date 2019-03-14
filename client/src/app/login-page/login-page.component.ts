@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../shared/services/auth.service';
+import { MaterialService } from './../shared/classes/material.service';
 
 @Component({
   selector: 'app-login-page',
@@ -30,9 +31,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     this.route.queryParams.subscribe((params: Params) => {
       if (params['registered']) {
-
+        MaterialService.toast('Теперь вы можете зайти в систему');
       } else if (params['accessDenied']) {
-        
+        MaterialService.toast('Доступ запрещен');
+      } else if (params['sessionFailed']) {
+        MaterialService.toast('Авторизуйтесь заново, пожалуйста');
       }
     });
   }
@@ -52,7 +55,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
       },
       error => {
         this.form.enable();
-        console.log(error);
+        MaterialService.toast(error.error.message);
       }
     );
   }
