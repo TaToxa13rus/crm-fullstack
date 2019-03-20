@@ -1,10 +1,11 @@
 import { MaterialService } from './../../shared/classes/material.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CategoriesService } from './../../shared/services/categories.service';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
+import { ICategory } from 'src/app/shared/interfaces';
 
 @Component({
   selector: 'app-categories-form',
@@ -12,8 +13,12 @@ import { of } from 'rxjs';
   styleUrls: ['./categories-form.component.css']
 })
 export class CategoriesFormComponent implements OnInit {
+  @ViewChild('input') inputRef: ElementRef;
   form: FormGroup;
+  image: File;
+  imagePreview = null;
   isNew = true;
+  category: ICategory;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,18 +46,61 @@ export class CategoriesFormComponent implements OnInit {
         )
       )
       .subscribe(
-        category => {
+        (category: ICategory) => {
           if (category) {
             this.form.patchValue({
               name: category.name
             });
+            this.category = category;
+            this.imagePreview = category.imageSrc;
             MaterialService.updateTextInputs();
           }
           this.form.enable();
         },
-        error => MaterialService.toast(error.error.message)
+        error => {
+          MaterialService.toast(error.error.message);
+          this.form.enable();
+        }
       );
   }
 
-  onSubmit() {}
+  onSubmit() {
+    let obs$: Observable<ICategory>;
+
+    this.form.disable();
+
+    if (this.isNew) {
+      obs$ = this.categoriesService.create(this.form.value.name, this.image);
+    } else {
+      obs$ = this.categoriesService.update(this.category._id, this.form.value.name, this.image);
+    }
+
+    obs$.subscribe(
+      category => {
+        this.category = category;
+        MaterialService.toast('Изменения сохранены');
+        this.form.enable();
+      },
+      error => {
+        MaterialService.toast(error.error.message);
+        this.form.enable();
+      }
+    );
+  }
+
+  triggerInput() {
+    this.inputRef.nativeElement.click();
+  }
+
+  onFileUpload(event: any) {
+    const file = event.target.files[0];
+    this.image = file;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
 }
