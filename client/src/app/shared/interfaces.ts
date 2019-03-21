@@ -9,3 +9,15 @@ export interface ICategory {
   user?: string;
   _id?: string;
 }
+
+export interface IPosition {
+  name: string;
+  cost: number;
+  user?: string;
+  category: string;
+  _id?: string;
+}
+
+export interface IMessage {
+  message: string;
+}

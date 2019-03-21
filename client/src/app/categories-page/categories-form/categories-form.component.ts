@@ -1,11 +1,12 @@
 import { MaterialService } from './../../shared/classes/material.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CategoriesService } from './../../shared/services/categories.service';
 import { switchMap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 import { ICategory } from 'src/app/shared/interfaces';
+import { error } from 'util';
 
 @Component({
   selector: 'app-categories-form',
@@ -22,6 +23,7 @@ export class CategoriesFormComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private categoriesService: CategoriesService
   ) {}
 
@@ -57,8 +59,8 @@ export class CategoriesFormComponent implements OnInit {
           }
           this.form.enable();
         },
-        error => {
-          MaterialService.toast(error.error.message);
+        err => {
+          MaterialService.toast(err.error.message);
           this.form.enable();
         }
       );
@@ -81,8 +83,8 @@ export class CategoriesFormComponent implements OnInit {
         MaterialService.toast('Изменения сохранены');
         this.form.enable();
       },
-      error => {
-        MaterialService.toast(error.error.message);
+      err => {
+        MaterialService.toast(err.error.message);
         this.form.enable();
       }
     );
@@ -90,6 +92,19 @@ export class CategoriesFormComponent implements OnInit {
 
   triggerInput() {
     this.inputRef.nativeElement.click();
+  }
+
+  deleteCategory() {
+    const decision = window.confirm(`Вы действительно хотите удалить категорию ${this.category.name}?`);
+
+    if (decision) {
+      this.categoriesService.delete(this.category._id)
+        .subscribe(
+          response => MaterialService.toast(response.message),
+          err => MaterialService.toast(err.error.message),
+          () => this.router.navigate(['/categories'])
+        );
+    }
   }
 
   onFileUpload(event: any) {
