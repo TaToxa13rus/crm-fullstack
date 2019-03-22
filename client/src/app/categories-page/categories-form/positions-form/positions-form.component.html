@@ -21,7 +21,7 @@
             {{ position.name }} <strong>{{ position.cost }} руб.</strong>
           </span>
           <span>
-            <i class="material-icons" (click)="onDeletePosition(position)" >delete</i>
+            <i class="material-icons" (click)="onDeletePosition($event, position)" >delete</i>
           </span>
         </a>
       </div>
