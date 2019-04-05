@@ -16,6 +16,22 @@ export interface IPosition {
   user?: string;
   category: string;
   _id?: string;
+  quantity?: number;
+}
+
+export interface IOrder {
+  date?: Date;
+  order?: number;
+  user?: string;
+  list: any[];
+  _id?: string;
+}
+
+export interface IOrderPosition {
+  name: string;
+  cost: number;
+  quantity?: number;
+  _id?: string;
 }
 
 export interface IMessage {
