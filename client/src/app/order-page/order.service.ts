@@ -4,7 +4,6 @@ import { IPosition } from '../shared/interfaces';
 
 @Injectable()
 export class OrderService {
-
   public list: IOrderPosition[] = [];
   public price = 0;
 
@@ -28,11 +27,14 @@ export class OrderService {
     this.computePrice();
   }
 
-  clear() { }
+  clear() {
+    this.list = [];
+    this.price = 0;
+  }
 
   private computePrice() {
     this.price = this.list.reduce((total, item) => {
-      return total += item.quantity * item.cost;
+      return (total += item.quantity * item.cost);
     }, 0);
   }
 }

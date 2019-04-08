@@ -8,7 +8,7 @@ export interface IMaterialInstance {
 
 export class MaterialService {
   static toast(message: string) {
-    M.toast({html: message});
+    M.toast({ html: message });
   }
 
   static initializeFloatingButton(element) {
@@ -21,5 +21,9 @@ export class MaterialService {
 
   static initModal(element): IMaterialInstance {
     return M.Modal.init(element);
+  }
+
+  static initTooltip(element): IMaterialInstance {
+    return M.Tooltip.init(element);
   }
 }
