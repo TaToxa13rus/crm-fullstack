@@ -32,6 +32,8 @@ export interface IOrderPosition {
   cost: number;
   quantity?: number;
   _id?: string;
+  user?: string;
+  category?: string;
 }
 
 export interface IMessage {

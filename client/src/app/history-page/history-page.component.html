@@ -14,10 +14,30 @@
 
 <app-history-filter *ngIf="isFilterVisible"></app-history-filter>
 
-<app-history-list></app-history-list>
+<div *ngIf="!reloading; else reloader">
+  <div *ngIf="orders.length > 0; else empty">
+    <app-history-list [orders]="orders"></app-history-list>
 
-<div class="center mb2">
-  <button class="btn waves-effect grey darken-1 btn-small">
-    Загрузить еще
-  </button>
+    <div
+      class="center mb2"
+      *ngIf="!noMoreOrders"
+    >
+      <button
+        class="btn waves-effect grey darken-1 btn-small"
+        (click)="loadMore()"
+        *ngIf="!loading; else loader"
+      >
+        Загрузить еще
+      </button>
+      <ng-template #loader>
+        <app-loader></app-loader>
+      </ng-template>
+    </div>
+  </div>
+  <ng-template #empty>
+    <div class="center">Заказов пока нет.</div>
+  </ng-template>
 </div>
+<ng-template #reloader>
+  <app-loader></app-loader>
+</ng-template>
