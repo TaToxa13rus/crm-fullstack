@@ -1,35 +1,19 @@
 <div class="page-title">
   <h4>История заказов</h4>
-  <button
-    #tooltip
-    class="btn btn-small"
-    data-tooltip="Открыть фильтр"
-    data-position="left"
-    (click)="isFilterVisible = !isFilterVisible"
-    [ngClass]="{ active: isFilterVisible }"
-  >
+  <button #tooltip class="btn btn-small" data-tooltip="Открыть фильтр" data-position="left"
+    (click)="isFilterVisible = !isFilterVisible" [ngClass]="{ 'active': isFilterVisible, 'red': isFiltered() }">
     <i class="material-icons">filter_list</i>
   </button>
 </div>
 
-<app-history-filter
-  *ngIf="isFilterVisible"
-  (onFilter)="applyFilter($event)"
-></app-history-filter>
+<app-history-filter *ngIf="isFilterVisible" (onFilter)="applyFilter($event)"></app-history-filter>
 
 <div *ngIf="!reloading; else reloader">
   <div *ngIf="orders.length > 0; else empty">
     <app-history-list [orders]="orders"></app-history-list>
 
-    <div
-      class="center mb2"
-      *ngIf="!noMoreOrders"
-    >
-      <button
-        class="btn waves-effect grey darken-1 btn-small"
-        (click)="loadMore()"
-        *ngIf="!loading; else loader"
-      >
+    <div class="center mb2" *ngIf="!noMoreOrders">
+      <button class="btn waves-effect grey darken-1 btn-small" (click)="loadMore()" *ngIf="!loading; else loader">
         Загрузить еще
       </button>
       <ng-template #loader>

@@ -3,7 +3,6 @@ import { MaterialService } from 'src/app/shared/classes/material.service';
 import {
   Component,
   EventEmitter,
-  OnInit,
   Output,
   ViewChild,
   ElementRef,
