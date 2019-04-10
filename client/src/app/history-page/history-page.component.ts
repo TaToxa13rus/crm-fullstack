@@ -1,4 +1,4 @@
-import { IOrder } from './../shared/interfaces';
+import { IOrder, IFilter } from './../shared/interfaces';
 import { Subscription } from 'rxjs';
 import {
   IMaterialInstance,
@@ -76,4 +76,6 @@ export class HistoryPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loading = true;
     this.fetch();
   }
+
+  applyFilter(filter: IFilter) {}
 }

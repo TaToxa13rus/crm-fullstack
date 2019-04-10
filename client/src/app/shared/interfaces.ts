@@ -39,3 +39,9 @@ export interface IOrderPosition {
 export interface IMessage {
   message: string;
 }
+
+export interface IFilter {
+  start?: Date;
+  end?: Date;
+  order?: number;
+}
