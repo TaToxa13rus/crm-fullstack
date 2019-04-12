@@ -6,7 +6,9 @@ module.exports.overview = async function (req, res) {
   try {
     const allOrders = await Order.find({
       user: req.user.id
-    }).sort(1)
+    }).sort({
+      date: 1
+    })
     const ordersMap = getOrdersMap(allOrders)
     const yesterdayOrders = ordersMap[moment().add(-1, 'd').format('DD.MM.YYYY')] || []
 
@@ -38,7 +40,7 @@ module.exports.overview = async function (req, res) {
     })
 
   } catch (error) {
-    errorHandler(res, e)
+    errorHandler(res, error)
   }
 }
 

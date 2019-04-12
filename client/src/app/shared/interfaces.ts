@@ -45,3 +45,15 @@ export interface IFilter {
   end?: Date;
   order?: number;
 }
+
+export interface IOverviewPage {
+  orders: IOverviewPageItem;
+  gain: IOverviewPageItem;
+}
+
+export interface IOverviewPageItem {
+  percent: number;
+  compare: number;
+  yesterday: number;
+  isHigher: boolean;
+}
